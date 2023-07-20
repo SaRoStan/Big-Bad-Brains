@@ -1,1 +1,5 @@
+This folders contains the functional connectivity matrices obtained from raw neural activations in the Emotion task of the HCP database for 100 subjects.
 
+There are two conditions -
+1. Fear = Emotional Face Recognition condition
+2. Neut = Shape Recognition condition
