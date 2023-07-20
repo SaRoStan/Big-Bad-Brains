@@ -1,0 +1,5 @@
+.DS_Store
+.ipynb_checkpoints
+hcp_task.tgz
+hcp_task
+load_hcp_task_with_behaviour*
