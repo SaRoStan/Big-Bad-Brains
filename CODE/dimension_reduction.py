@@ -25,21 +25,33 @@ def sort_evals_descending(evals, evectors):
     return evals, evectors
 
 def get_the_eigen_matrix(data):
+    """
+    get eigenvalues and vectors
+    """
     mean_data = data - np.mean(data, 0)
     relation_pre_data = mean_data.T @ mean_data / mean_data.shape[0]
     # calculate the eigenvalue and eigenvectors
     eigenvalues, eigenvectors = np.linalg.eig(relation_pre_data)
     eigenvalues, eigenvectors = sort_evals_descending(eigenvalues, eigenvectors)
     return eigenvalues, eigenvectors
+    
 def pca(data, eigenvectors, k=1024):
+    """
+    reduce the data dimensions
+    (N,features) -> (N,k)
+    """
     score = (data @ eigenvectors[:,:k]).real
     row_sums = score.sum(axis=1)
     score = score / row_sums[:, np.newaxis]
     return score
 
 def get_data_with_window(data, end_pos, hop_size=5, win_size=10):
-    
-#     data = np.load(path)
+    """
+    slicing the data 
+        data - the input data matrix
+        end_pos - the end position of the matrix for slicing
+        win_size - window size
+    """
     row = data.shape[0]
     num_data_items = (end_pos - win_size) // hop_size + 1
     res = np.empty((num_data_items,row*win_size))
@@ -48,8 +60,13 @@ def get_data_with_window(data, end_pos, hop_size=5, win_size=10):
     return res
 
 def load_flatten_data(task,sub_idx, row=360, col=232):
-#     data = np.empty((num_subj,row*col*2))
-#     for idx,sub in enumerate(subjects):
+    """
+    Load data for one subject and slice based on a window
+        task - str, name of your task eg. RELATIONAL
+        sub_idx - int
+        (row, col) - the shape of your data matrix
+    """
+    # loading data
     HCP_DIR = "./hcp_task"
     subjects = np.loadtxt(os.path.join(HCP_DIR, 'subjects_list.txt'), dtype='str')
     sub = subjects[sub_idx]
@@ -59,9 +76,10 @@ def load_flatten_data(task,sub_idx, row=360, col=232):
         path = os.path.join(HCP_DIR, 'subjects', sub, task, 'tfMRI_'+task+'_'+run, 'data.npy')
         temp = np.load(path)
         subj_data[i_run] = temp
-
     subj_data = np.concatenate((subj_data[0],subj_data[1]),axis=1)
     print(subj_data.shape)
+    
+    # slicing the data
     data = get_data_with_window(subj_data, col*2)
         
     return data
