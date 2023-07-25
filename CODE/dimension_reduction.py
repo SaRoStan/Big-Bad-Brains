@@ -85,8 +85,12 @@ def load_flatten_data(task,sub_idx, row=360, col=232):
     return data
 
 if __name__ == '__main__':
-    data = load_flatten_data('RELATIONAL',0)
-    eigenvalues, eigenvectors = get_the_eigen_matrix(data)
-    pca(data, eigenvectors)
+    SAVE_DIR = "./hcp_task/RELATIONAL/"
+    for i,sub in enumerate(subjects):
+        data = load_flatten_data("RELATIONAL",i)
+        eigenvalues, eigenvectors = get_the_eigen_matrix(data)
+        res = pca(data, eigenvectors)
+        path =SAVE_DIR + "sub_"+sub+"_RELATIONAL.npy"
+        np.save(path, res)
 
 
