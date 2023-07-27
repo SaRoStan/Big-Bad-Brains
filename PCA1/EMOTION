@@ -1,0 +1,5 @@
+This folder contains the PCA results on individual subject time series data on the emotion task.
+The raw time series was : 360 x 176.
+Dimensionally reduced PCAs matrices are : 58 X 1024. 
+
+However, scree plots indicate that only 2 components are needed to explain about 99% of the data per subject. 
